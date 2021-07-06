@@ -28,6 +28,8 @@ This repository contains placementify backend code. Built with Spring Boot, Spri
 - /api/student/delete/{ suid }
 - /api/student/find/{ suid }
 
+#### Roles
+
 | Role |
 | ---- |
 | ADMIN |
