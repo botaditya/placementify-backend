@@ -7,4 +7,5 @@ import lombok.Setter;
 public class CourseView {
     public long cuid;
     public String courseName;
+    public String coursePattern;
 }

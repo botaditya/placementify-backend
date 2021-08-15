@@ -1,5 +1,6 @@
 package com.hashcode.placementify.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +23,7 @@ public class Batch implements Serializable {
     @Column(name = "buid",nullable = false,updatable = false)
     private long buid;
     private long cuid;
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name ="cuid_foreign", referencedColumnName = "cuid", insertable = false, updatable = false, nullable = false)
     private Course course;
@@ -29,6 +31,7 @@ public class Batch implements Serializable {
     private int startYear;
     private int endYear;
     private double noOfStudents;
+    @JsonIgnore
     @OneToMany(mappedBy = "batch", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Student> students=new HashSet<>();
 

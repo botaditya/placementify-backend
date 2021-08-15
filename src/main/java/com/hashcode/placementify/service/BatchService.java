@@ -5,6 +5,7 @@ import com.hashcode.placementify.exception.BatchNotFoundException;
 import com.hashcode.placementify.model.Batch;
 import com.hashcode.placementify.repository.BatchRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class BatchService {
         return batchRepository.save(batch);
     }
 
-    public Batch findBatchByBuid(Long buid){
+    public Batch findBatchByBuid(@PathVariable Long buid){
         return batchRepository.findBatchByBuid(buid).orElseThrow(() -> new BatchNotFoundException("Batch by id "+ buid +" was not found"));
     }
 

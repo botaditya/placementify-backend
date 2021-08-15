@@ -33,4 +33,13 @@ This repository contains placementify backend code. Built with Spring Boot, Spri
 | Role |
 | ---- |
 | ADMIN |
-| ORGANISATION |
+| USER |
+
+
+=================================
+
+## TODO
+
+1] Filter data
+- Fetch all students data []
+- 

@@ -11,11 +11,11 @@ import com.hashcode.placementify.repository.RoleRepository;
 import com.hashcode.placementify.repository.UserRepository;
 import com.hashcode.placementify.security.jwt.JwtUtils;
 import com.hashcode.placementify.service.UserDetailsImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -30,20 +30,28 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-	@Autowired
+	final
 	AuthenticationManager authenticationManager;
 
-	@Autowired
+	final
 	UserRepository userRepository;
 
-	@Autowired
+	final
 	RoleRepository roleRepository;
 
-	@Autowired
+	final
 	PasswordEncoder encoder;
 
-	@Autowired
+	final
 	JwtUtils jwtUtils;
+
+	public AuthController(AuthenticationManager authenticationManager, UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder encoder, JwtUtils jwtUtils) {
+		this.authenticationManager = authenticationManager;
+		this.userRepository = userRepository;
+		this.roleRepository = roleRepository;
+		this.encoder = encoder;
+		this.jwtUtils = jwtUtils;
+	}
 
 	@PostMapping("/signin")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -56,10 +64,10 @@ public class AuthController {
 		
 		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();		
 		List<String> roles = userDetails.getAuthorities().stream()
-				.map(item -> item.getAuthority())
+				.map(GrantedAuthority::getAuthority)
 				.collect(Collectors.toList());
 
-		return ResponseEntity.ok(new JwtResponse(jwt, 
+		return ResponseEntity.ok(new JwtResponse(jwt,
 												 userDetails.getId(), 
 												 userDetails.getUsername(), 
 												 userDetails.getEmail(), 
@@ -87,7 +95,7 @@ public class AuthController {
 
 		Set<Role> roles = new HashSet<>();
 
-		Role userRole = roleRepository.findByName(ERole.ROLE_ORGANISATION)
+		Role userRole = roleRepository.findByName(ERole.ROLE_USER)
 				.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
 		roles.add(userRole);
 

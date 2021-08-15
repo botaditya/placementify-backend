@@ -1,9 +1,14 @@
 package com.hashcode.placementify.service;
 
+import com.hashcode.placementify.dto.AddCourseDTO;
+import com.hashcode.placementify.dto.CourseView;
+import com.hashcode.placementify.exception.BatchNotFoundException;
 import com.hashcode.placementify.exception.CourseNotFoundException;
+import com.hashcode.placementify.model.Batch;
 import com.hashcode.placementify.model.Course;
 import com.hashcode.placementify.repository.CourseRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,18 +33,28 @@ public class CourseService {
     }
 
     public Course updateCourse(Course course){
-        return courseRepository.save(course);
+        Course courseObject = courseRepository.findCourseByCuid(course.getCuid()).orElseThrow(() -> new CourseNotFoundException("Course by id "+ course.getCuid() +" was not found"));
+        Course updatedCourseObject = new Course();
+        updatedCourseObject.setCuid(courseObject.getCuid());
+        updatedCourseObject.setCourseName(courseObject.getCourseName());
+        updatedCourseObject.setCoursePattern(courseObject.getCoursePattern());
+        updatedCourseObject.setCourseDuration(courseObject.getCourseDuration());
+        updatedCourseObject.setCourseUniversity(courseObject.getCourseUniversity());
+        return courseRepository.save(updatedCourseObject);
     }
 
-    public List<Map<String, String>> getCoursesNameList(){
-        final List<Map<String, String>> coursesList = new ArrayList<>();
+    public Course findCourseById(@PathVariable Long cuid){
+        return courseRepository.findCourseByCuid(cuid).orElseThrow(() -> new CourseNotFoundException("Course by id "+ cuid +" was not found"));
+    }
+
+    public List<CourseView> getCoursesNameList(){
+        final List<CourseView> coursesList = new ArrayList<>();
         List<Course> courses = getAllCourses();
         for ( Course course: courses ){
-            Map<String, String> courseProperties = new HashMap<String, String>(){{
-                put("cuid", String.valueOf(course.getCuid()));
-                put("courseName",course.getCourseName().toString());
-                put("coursePattern",course.getCoursePattern().toString());
-            }};
+            CourseView courseProperties = new CourseView();
+            courseProperties.setCuid(course.getCuid());
+            courseProperties.setCourseName(course.getCourseName());
+            courseProperties.setCoursePattern(course.getCoursePattern());
             coursesList.add(courseProperties);
         }
         return coursesList;
@@ -50,7 +65,8 @@ public class CourseService {
     }
 
     public void deleteCourse(Long cuid) {
-        courseRepository.deleteCourseByCuid(cuid);
+        Course courseObject = courseRepository.findCourseByCuid(cuid).orElseThrow(() -> new CourseNotFoundException("Course by id "+ cuid +" was not found"));;
+        courseRepository.delete(courseObject);
     }
 
 }

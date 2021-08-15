@@ -1,10 +1,9 @@
 package com.hashcode.placementify.model;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -28,41 +27,102 @@ public class Student implements Serializable {
     @JoinColumn(name ="buid_foreign", referencedColumnName = "buid", insertable = false, updatable = false, nullable = false)
     private Batch batch;
     private String nameBySSC;
-    private String emaiId;
-    private String phoneNumber;
+    private String emailId;
     private String whatsappNumber;
+    private String phoneNumber;
+    private String parentPhone;
+    private String parentCompany;
     private String gender;
     private Date dateOfBirth;
+    private String bloodGroup;
+    @Value("false")
+    private boolean handicapped;
+    private String CasteCategory;
+    private String aadharNumber;
+    private String panNumber;
+    private String languagesKnown;
+
     private String currentState;
     private String currentCity;
     private String homeState;
     private String homeCity;
-    private String languagesKnown;
+
     private String currentCourse;
     private String currentBatch;
-    private String currentInstitute;
-    private String postgrad;
+    private String currentCourseUnivPRN;
+    //filter param
+    @Value("0")
+    private double currentCourseCGPA;
+    @Value("0")
+    private double currentCoursePercent;
+    //filter param
+    private String currentCoursePassoutYear;
+
+    private String currentCourseInstitute;
+    private String currentCourseUniversity;
+
+    private boolean postgrad;
+    private String postgradCourse;
+
     private String dreamCompanies;
+    private String areaOfExpertise;
+
     private String gradCourse;
-    private double gradCGPA;
+    private String gradSeatNo;
+    private String gradUnivPRN;
     private String gradYear;
+    //filter param
+    @Value("0")
+    private double gradCGPA;
+    @Value("0")
     private double gradPercent;
     private String gradInstitute;
     private String gradUniversity;
     private String gradCityState;
+
+    private String hscCeatNo;
+    //filter param
+    @Value("0")
     private double hscPercent;
+    @Value("0")
     private double hscCGPA;
     private String hscYear;
+
+    private String sscCeatNo;
+    //filter param
+    @Value("0")
     private double sscPercent;
+    @Value("0")
     private double sscCGPA;
     private String sscYear;
-    private String gap;
-    private int yearsOfGap;
-    private String workExp;
-    private int yearsOfExp;
-    private String companyName;
-    private String companyLoc;
-    @Column(nullable = false, updatable = false)
-    private String formId;
 
+    //filter param
+    @Value("false")
+    private boolean gap;
+    @Value("0")
+    private int yearsOfGap;
+
+    @Value("false")
+    private boolean workExp;
+    @Value("0")
+    private int yearsOfExp;
+    @Value("-")
+    private String companyName;
+    @Value("-")
+    private String companyLoc;
+
+    //FILE PARAM { MARKSHEETS, RESUME, PHOTO }
+
+    @Column(length = 500000)
+    private byte[] resume;
+    @Column(length = 250000)
+    private byte[] photo;
+
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(nullable = false, updatable = false)
+    private String applicationId;
 }

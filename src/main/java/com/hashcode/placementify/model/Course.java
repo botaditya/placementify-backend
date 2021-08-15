@@ -1,5 +1,6 @@
 package com.hashcode.placementify.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,9 +25,11 @@ public class Course  implements Serializable {
     private String coursePattern;
     private int courseDuration;
     private String courseUniversity;
+    @JsonIgnore
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Batch> batches=new HashSet<>();
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private Set<Student> students=new HashSet<>();
 
     @Override
