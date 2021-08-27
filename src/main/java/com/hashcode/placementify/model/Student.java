@@ -51,10 +51,8 @@ public class Student implements Serializable {
     private String currentBatch;
     private String currentCourseUnivPRN;
     //filter param
-    @Value("0")
-    private double currentCourseCGPA;
-    @Value("0")
-    private double currentCoursePercent;
+    private String currentCourseMarkingScheme;
+    private double currentCourseScore;
     //filter param
     private String currentCoursePassoutYear;
 
@@ -72,28 +70,22 @@ public class Student implements Serializable {
     private String gradUnivPRN;
     private String gradYear;
     //filter param
-    @Value("0")
-    private double gradCGPA;
-    @Value("0")
-    private double gradPercent;
+    private String gradMarkingScheme;
+    private double gradScore;
     private String gradInstitute;
     private String gradUniversity;
     private String gradCityState;
 
     private String hscCeatNo;
     //filter param
-    @Value("0")
-    private double hscPercent;
-    @Value("0")
-    private double hscCGPA;
+    private String hscMarkingScheme;
+    private double hscScore;
     private String hscYear;
 
     private String sscCeatNo;
     //filter param
-    @Value("0")
-    private double sscPercent;
-    @Value("0")
-    private double sscCGPA;
+    private String sscMarkingScheme;
+    private double sscScore;
     private String sscYear;
 
     //filter param
