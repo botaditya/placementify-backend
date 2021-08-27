@@ -56,9 +56,9 @@ public class StudentController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/filterStudents")
+/*    @PostMapping("/filterStudents")
     public ResponseEntity<List<Student>> filterStudents(@RequestBody FilterStudentDTO filterStudentDTO) {
         List<Student> filteredStudents = studentService.filterStudents(filterStudentDTO);
         return new ResponseEntity<>(filteredStudents,HttpStatus.OK);
-    }
+    }*/
 }

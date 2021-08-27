@@ -36,20 +36,6 @@ public class StudentService {
         return studentRepository.findStudentBySuid(suid).orElseThrow(() -> new StudentNotFoundException("Student by id "+ suid +" was not found"));
     }
 
-    public List<Student> filterStudents(FilterStudentDTO filterStudentDTO) {
-        List<Student> allStudents = studentRepository.findAll();
-        return allStudents.stream()
-                .filter((student) ->
-                        filterStudentDTO.getSscMarkScheme().equals(MarkingScheme.CGPA) ?
-                                student.getSscCGPA() <= filterStudentDTO.getSscMarks() :
-                                student.getSscPercent() <= filterStudentDTO.getSscMarks() && filterStudentDTO.getHscMarkScheme().equals(MarkingScheme.CGPA) ?
-                                        student.getHscCGPA() <= filterStudentDTO.getHscMarks() :
-                                        student.getGradPercent() <= filterStudentDTO.getHscMarks() && filterStudentDTO.getGradMarkScheme().equals(MarkingScheme.CGPA) ?
-                                                student.getGradCGPA() <= filterStudentDTO.getGradMarks() :
-                                                student.getGradPercent() <= filterStudentDTO.getGradMarks() && filterStudentDTO.getCurrentMarkScheme().equals(MarkingScheme.CGPA) ? student.getCurrentCourseCGPA() <= filterStudentDTO.getCurrentMarks() :
-                                                        student.getCurrentCoursePercent() <= filterStudentDTO.getCurrentMarks()
-                        ).collect(Collectors.toList());
-    }
 
     public void deleteStudent(Long suid) {
         studentRepository.deleteStudentBySuid(suid);
