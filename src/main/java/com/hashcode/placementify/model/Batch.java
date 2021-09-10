@@ -8,7 +8,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -16,31 +18,30 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "Batch")
+@Table(name = "batch")
 public class Batch implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "buid",nullable = false,updatable = false)
     private long buid;
-    private long cuid;
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name ="cuid_foreign", referencedColumnName = "cuid", insertable = false, updatable = false, nullable = false)
-    private Course course;
+
     private String batchName;
     private int startYear;
     private int endYear;
     private double noOfStudents;
+
     @JsonIgnore
-    @OneToMany(mappedBy = "batch", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Student> students=new HashSet<>();
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "course_id", referencedColumnName = "cuid")
+    private Course course;
+
+    @OneToMany(mappedBy = "batch")
+    private Set<Student> studentsEnrolled=new HashSet<>();
 
     @Override
     public String toString() {
         return "Batch{" +
                 "buid=" + buid +
-                ", cuid=" + cuid +
-                ", course=" + course +
                 ", batchName='" + batchName + '\'' +
                 ", startYear=" + startYear +
                 ", endYear=" + endYear +

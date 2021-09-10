@@ -34,13 +34,11 @@ public class CourseService {
 
     public Course updateCourse(Course course){
         Course courseObject = courseRepository.findCourseByCuid(course.getCuid()).orElseThrow(() -> new CourseNotFoundException("Course by id "+ course.getCuid() +" was not found"));
-        Course updatedCourseObject = new Course();
-        updatedCourseObject.setCuid(courseObject.getCuid());
-        updatedCourseObject.setCourseName(courseObject.getCourseName());
-        updatedCourseObject.setCoursePattern(courseObject.getCoursePattern());
-        updatedCourseObject.setCourseDuration(courseObject.getCourseDuration());
-        updatedCourseObject.setCourseUniversity(courseObject.getCourseUniversity());
-        return courseRepository.save(updatedCourseObject);
+        courseObject.setCourseName(course.getCourseName());
+        courseObject.setCoursePattern(course.getCoursePattern());
+        courseObject.setCourseDuration(course.getCourseDuration());
+        courseObject.setCourseUniversity(course.getCourseUniversity());
+        return courseRepository.save(courseObject);
     }
 
     public Course findCourseById(@PathVariable Long cuid){

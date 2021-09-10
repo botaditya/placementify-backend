@@ -5,10 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -16,21 +19,18 @@ import java.util.Set;
 @Entity
 @Getter @Setter
 @Table(name = "course")
-public class Course  implements Serializable {
+public class Course implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cuid",nullable = false,updatable = false)
-    private long cuid;
+    private Long cuid;
     private String courseName;
     private String coursePattern;
     private int courseDuration;
     private String courseUniversity;
-    @JsonIgnore
-    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     private Set<Batch> batches=new HashSet<>();
-    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore
-    private Set<Student> students=new HashSet<>();
 
     @Override
     public String toString() {
@@ -39,9 +39,7 @@ public class Course  implements Serializable {
                 ", courseName='" + courseName + '\'' +
                 ", coursePattern='" + coursePattern + '\'' +
                 ", courseDuration=" + courseDuration +
-                ", CourseUniversity='" + courseUniversity + '\'' +
-                ", batches=" + batches +
-                ", students=" + students +
+                ", courseUniversity='" + courseUniversity + '\'' +
                 '}';
     }
 }

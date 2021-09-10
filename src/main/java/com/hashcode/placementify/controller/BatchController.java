@@ -1,11 +1,12 @@
 package com.hashcode.placementify.controller;
 
 
+import com.hashcode.placementify.dto.BatchDTO;
 import com.hashcode.placementify.model.Batch;
 import com.hashcode.placementify.service.BatchService;
+import com.hashcode.placementify.service.CourseService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,9 +17,11 @@ import java.util.List;
 public class BatchController {
 
     private final BatchService batchService;
+    private final CourseService courseService;
 
-    public BatchController(BatchService batchService) {
+    public BatchController(BatchService batchService, CourseService courseService) {
         this.batchService = batchService;
+        this.courseService = courseService;
     }
 
 
@@ -34,9 +37,17 @@ public class BatchController {
         return new ResponseEntity<>(batch, HttpStatus.OK);
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<Batch> addBatch(@RequestBody Batch batch){
-        Batch newBatch = batchService.addBatch(batch);
+    @RequestMapping( path = "/add",method = RequestMethod.POST)
+    public ResponseEntity<Batch> addBatch(@RequestBody BatchDTO batch){
+        //System.out.println(batch);
+        Batch newBatch = new Batch();
+        newBatch.setStartYear(batch.getStartYear());
+        newBatch.setBatchName(batch.getBatchName());
+        newBatch.setEndYear(batch.getEndYear());
+        newBatch.setNoOfStudents(batch.getNoOfStudents());
+        newBatch.setCourse(courseService.findCourseByCuid(batch.getCuid()));
+
+        batchService.addBatch(newBatch);
         return new ResponseEntity<>(newBatch, HttpStatus.CREATED);
     }
 

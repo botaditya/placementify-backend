@@ -1,6 +1,7 @@
 package com.hashcode.placementify.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,23 +21,23 @@ public class Student implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "suid",nullable = false,updatable = false)
     private long suid;
-    @ManyToOne
-    @JoinColumn(name ="cuid_foreign", referencedColumnName = "cuid", insertable = false, updatable = false, nullable = false)
-    private Course course;
-    @ManyToOne
-    @JoinColumn(name ="buid_foreign", referencedColumnName = "buid", insertable = false, updatable = false, nullable = false)
+
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "batch_id", referencedColumnName = "buid")
     private Batch batch;
+
     private String nameBySSC;
     private String emailId;
     private String whatsappNumber;
     private String phoneNumber;
     private String parentPhone;
-    private String parentCompany;
+    private String parentOccupation;
     private String gender;
     private Date dateOfBirth;
     private String bloodGroup;
-    @Value("false")
-    private boolean handicapped;
+    //@Value("false")
+    private String handicapped;
     private String CasteCategory;
     private String aadharNumber;
     private String panNumber;
@@ -59,9 +60,6 @@ public class Student implements Serializable {
     private String currentCourseInstitute;
     private String currentCourseUniversity;
 
-    private boolean postgrad;
-    private String postgradCourse;
-
     private String dreamCompanies;
     private String areaOfExpertise;
 
@@ -74,28 +72,27 @@ public class Student implements Serializable {
     private double gradScore;
     private String gradInstitute;
     private String gradUniversity;
-    private String gradCityState;
 
-    private String hscCeatNo;
+    private String hscSeatNo;
     //filter param
     private String hscMarkingScheme;
     private double hscScore;
     private String hscYear;
 
-    private String sscCeatNo;
+    private String sscSeatNo;
     //filter param
     private String sscMarkingScheme;
     private double sscScore;
     private String sscYear;
 
     //filter param
-    @Value("false")
-    private boolean gap;
+    //@Value("false")
+    private String gap;
     @Value("0")
     private int yearsOfGap;
 
-    @Value("false")
-    private boolean workExp;
+    //@Value("false")
+    private String workExp;
     @Value("0")
     private int yearsOfExp;
     @Value("-")
@@ -105,10 +102,12 @@ public class Student implements Serializable {
 
     //FILE PARAM { MARKSHEETS, RESUME, PHOTO }
 
+/*
     @Column(length = 500000)
     private byte[] resume;
     @Column(length = 250000)
     private byte[] photo;
+*/
 
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(

@@ -1,6 +1,5 @@
 package com.hashcode.placementify.controller;
 
-import com.hashcode.placementify.dto.FilterStudentDTO;
 import com.hashcode.placementify.model.Student;
 import com.hashcode.placementify.service.StudentService;
 import org.springframework.http.HttpStatus;
@@ -36,7 +35,6 @@ public class StudentController {
     }
 
     @PostMapping("/add")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<Student> addStudent(@RequestBody Student student){
         Student newStudent = studentService.addStudent(student);
         return new ResponseEntity<>(newStudent, HttpStatus.CREATED);
